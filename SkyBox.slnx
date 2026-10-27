@@ -6,4 +6,7 @@
   <Folder Name="/legacy/">
     <Project Path="progam/SkyBox.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SkyBox.Core.Tests/SkyBox.Core.Tests.csproj" />
+  </Folder>
 </Solution>
