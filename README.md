@@ -1,81 +1,43 @@
-> **Sky Box V4 web:** la versión funcional está en `feature/skybox-v4-web`. Incluye cartelera, reservas, cancelaciones y operación con diseño oscuro y datos en memoria. Consulta la [guía de inicio y uso](docs/V4-USER-GUIDE.md) y la [validación funcional](docs/V4-FUNCTIONAL-VALIDATION.md). La documentación original de consola se conserva debajo.
+# Sky Box Cinema — V4 Web
+
+![Sky Box V4 — Aplicación web](img/skybox-v4-web.png)
+
+## Sobre esta versión
+
+Sky Box V4 es una evolución personal e independiente desarrollada por Alejandro Rivera.
+
+Aunque el proyecto original de consola nació como un trabajo universitario grupal, esta nueva versión web fue desarrollada por iniciativa propia y no forma parte de una asignatura, entrega ni proyecto institucional de la universidad.
+
+La autoría y los créditos de la versión universitaria original se conservan en su documentación e historial. Esta distinción corresponde al desarrollo de la versión V4.
+
+## Funcionalidades
+
+- Cartelera con filtros por película, fecha y sala.
+- Selección de asientos y reservas de grupos.
+- Consulta y cancelación de reservas.
+- Comprobante imprimible.
+- Panel de operación con programación y ocupación.
+- Diseño oscuro adaptable a dispositivos móviles.
+
+## Tecnologías
+
+C#, .NET 10, ASP.NET Core Razor Pages, HTML, CSS y JavaScript.
+
+Actualmente, los datos se almacenan en memoria y se reinician al detener el servidor. La persistencia con SQLite está prevista para una siguiente fase.
+
+## Ejecución local
 
 ```powershell
 dotnet run --project src/SkyBox.Web
 ```
 
-Abrir http://localhost:5080. La aplicación es una demo local; sus datos se reinician al detener el servidor.
+Abrir http://localhost:5080.
 
----
-#  Sky Box - Sistema de Gestión de Cine
+## Documentación
 
-![Portada Cine](img/portada.jpg)
+- [Guía de uso](docs/V4-USER-GUIDE.md)
+- [Validación funcional](docs/V4-FUNCTIONAL-VALIDATION.md)
 
+## Versión original de consola
 
----
-
-##  Índice
-- [Descripción](#-descripción)
-- [Instalación y ejecución](#-instalación-y-ejecución)
-- [Estructura de clases](#-estructura-de-clases)
-- [Algoritmo de ordenamiento](#-algoritmo-de-ordenamiento)
-- [Aplicación en el cine](#-aplicación-en-el-cine)
-- [Autores](#-autores)
-
----
-
-##  Descripción
-Este sistema simula la gestión de un cine llamado **Sky Box**, permitiendo:
-- Ver la cartelera ordenada por horario.  
-- Mostrar el mapa de asientos de cada función.  
-- Reservar y cancelar boletos con código único.  
-- Generar reportes de ocupación.  
-- Agregar nuevas funciones a una sala.  
-
-El proyecto está implementado en **C# con Programación Orientada a Objetos (POO)** y hace uso de **listas anidadas** y el algoritmo de ordenamiento **Bubble Sort**.
-
----
-
-##  Instalación y ejecución
-1. Clonar el repositorio:
-   ```bash
-   git clone https://github.com/RaulOzk4R/Grupo2-DemostracionCompetencias/tree/cine-v3(skybox)
-   cd skybox
-   ```
-2. Compilar y ejecutar:
-   ```bash
-   dotnet build
-   dotnet run
-   ```
-
----
-
-##  Estructura de clases
-![Diagrama de Clases](img/readm.png)
-
-
-> El cine se modela con un diseño jerárquico:  
-> **Cinema → Sala → Funciones → Asientos/Boletos**.  
-> Cada parte está implementada como una clase independiente, aplicando los principios de POO.
-
----
-
-##  Algoritmo de ordenamiento
-El sistema utiliza el algoritmo **Bubble Sort** para ordenar las funciones de cada sala por horario.  
-Esto asegura que la cartelera siempre se muestre de forma **cronológica**, incluso si las funciones se agregan en desorden.
-
----
-
-##  Aplicación en el cine
-Este sistema aplica al cine de la siguiente manera:
-- Cada **sala** se modela con una lista de funciones.  
-- Cada **función** se gestiona con un mapa de asientos (listas de listas).  
-- Al reservar un asiento se genera un **boleto con código único**.  
-- El cine puede **agregar nuevas películas y funciones** dinámicamente.  
-
----
-
-##  Miembros
-- Colque Viscarra Jhair Abrahan  
-- Lazarte Mancilla Raúl Oscar  
-- Rivera Villarroel Marcelo Alejandro  
+El código original se conserva en la carpeta `progam`. Sus créditos universitarios corresponden a esa versión.
