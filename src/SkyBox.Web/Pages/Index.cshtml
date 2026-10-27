@@ -1,0 +1,52 @@
+@page
+@model IndexModel
+@{ ViewData["Title"] = "Cartelera"; }
+<section class="hero">
+    <div class="hero-art" aria-hidden="true"><div class="planet"></div><div class="hero-emblem">S</div><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span></div>
+    <div class="hero-content">
+        <p class="eyebrow"><span class="accent-line"></span> MUCHO MÁS QUE VER UNA PELÍCULA</p>
+        <h1>El mundo afuera.<br />El cine <em>adentro.</em></h1>
+        <p class="hero-description">Historias que se sienten. Sonido que te envuelve.<br />Tu próximo gran momento empieza aquí.</p>
+        <a class="button" href="#cartelera">Explorar cartelera <span aria-hidden="true">↗</span></a>
+        <div class="hero-meta"><span>EN PANTALLA</span><strong>SUPERMAN</strong><span>ACCIÓN · 129 MIN · +12</span></div>
+    </div>
+    <div class="hero-bottom"><span>01 <span class="muted">/ 07 HISTORIAS</span></span><span>APAGA EL RUIDO. ENCIENDE EL CINE.</span><span aria-hidden="true">↓</span></div>
+</section>
+<section class="section" id="cartelera">
+    <div class="section-heading"><div><p class="eyebrow">ELIGE TU PRÓXIMA HISTORIA</p><h2>En cartelera<span class="accent">.</span></h2></div><span class="section-note">Tu asiento te está esperando.</span></div>
+    <div class="date-tabs" aria-label="Fecha de la cartelera">
+    @for (var day = 0; day < 3; day++)
+    {
+        var date = Model.Today.AddDays(day);
+        <a asp-page="/Index" asp-route-date="@date.ToString("yyyy-MM-dd")" asp-route-movieId="@Model.MovieId" asp-route-roomId="@Model.RoomId" asp-fragment="cartelera" class="date-tab @(Model.Date == date ? "selected" : "")" aria-current="@(Model.Date == date ? "date" : null)"><strong>@(day == 0 ? "Hoy" : day == 1 ? "Mañana" : date.ToString("dddd"))</strong><span>@date.ToString("dd MMM")</span></a>
+    }
+        <div class="date-hint"><span class="status-dot"></span> Horarios de Bolivia · UTC−4</div>
+    </div>
+    <form method="get" class="filters">
+        <label>Película<select asp-for="MovieId"><option value="">Todas las películas</option>@foreach (var movie in Model.Movies) { <option value="@movie.Id">@movie.Title</option> }</select></label>
+        <label>Sala<select asp-for="RoomId"><option value="">Todas las salas</option>@foreach (var room in Model.Rooms) { <option value="@room.Id">@room.Name</option> }</select></label>
+        <label>Fecha<input type="date" name="Date" value="@Model.Date?.ToString("yyyy-MM-dd")" /></label>
+        <button class="button secondary" type="submit">Filtrar</button><a class="text-link" asp-page="/Index" asp-fragment="cartelera">Limpiar</a>
+    </form>
+    <div asp-validation-summary="All" class="validation" role="alert"></div>
+    <div class="movie-grid">
+    @foreach (var group in Model.Screenings.GroupBy(s => s.Movie).OrderBy(g => g.Key.Id))
+    {
+        var movie = group.Key;
+        <article class="movie-card">
+            <div class="poster @movie.Artwork" aria-hidden="true"><span class="poster-kicker">SKY BOX PRESENTA</span><span class="poster-symbol">@(movie.Id == 1 ? "S" : movie.Id == 4 ? "IV" : movie.Id == 7 ? "B&B" : movie.Id == 3 ? "↔" : movie.Id == 6 ? "∞" : "?")</span><span class="poster-title">@movie.Title</span><span class="poster-tagline">@movie.Tagline</span><span class="poster-rating">@movie.Rating</span></div>
+            <div class="movie-info"><p class="movie-genre">@movie.Genre <span>· @movie.DurationMinutes min</span></p><h3>@movie.Title</h3><p class="synopsis">@movie.Synopsis</p>
+            <div class="showtimes">@foreach (var screening in group)
+            {
+                if (screening.StartsAt <= Model.Now || screening.AvailableSeats == 0)
+                { <span class="showtime unavailable"><strong>@screening.StartsAt.ToString("HH:mm")</strong><span>@(screening.AvailableSeats == 0 ? "Agotada" : "Iniciada")</span></span> }
+                else
+                { <a class="showtime" asp-page="/Seats" asp-route-id="@screening.Id"><strong>@screening.StartsAt.ToString("HH:mm") <span aria-hidden="true">↗</span></strong><span>@screening.Room.Name · @screening.Format</span><small>Bs @screening.Price.ToString("0.##")</small></a> }
+            }</div></div>
+        </article>
+    }
+    </div>
+    @if (Model.Screenings.Count == 0)
+    { <div class="empty-state"><span aria-hidden="true">◌</span><h3>La próxima historia está por llegar</h3><p>No hay funciones para estos filtros. Prueba con otra fecha o sala.</p><a class="button secondary" asp-page="/Index">Ver toda la cartelera</a></div> }
+</section>
+<section class="experience-strip"><span class="eyebrow">LA EXPERIENCIA SKY BOX</span><h2>Una buena historia merece<br />una gran pantalla.</h2><div><span>01 <strong>4 salas</strong></span><span>02 <strong>Sonido envolvente</strong></span><span>03 <strong>Tu lugar, a tu manera</strong></span></div></section>

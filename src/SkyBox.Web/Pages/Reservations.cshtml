@@ -1,0 +1,16 @@
+@page "/mis-reservas"
+@model ReservationsModel
+@{ ViewData["Title"] = "Mi reserva"; }
+<section class="section narrow-page"><p class="eyebrow">TODO LISTO PARA TU PRÓXIMA VISITA</p><h1>Tu reserva,<br /><em>a la mano.</em></h1><p class="lead muted">Consulta tus asientos o cancela tu reserva con el código de confirmación.</p>
+    <form method="get" class="lookup-form"><label asp-for="Code">Código de reserva</label><div><input asp-for="Code" placeholder="SB-…" maxlength="40" autocomplete="off" required /><button class="button" type="submit">Consultar ↗</button></div></form>
+    <div asp-validation-summary="All" class="validation" role="alert"></div>
+    @if (Model.Booking is { } booking)
+    {
+        <article class="panel reservation-result"><span class="badge">@(booking.Cancelled ? "CANCELADA" : "CONFIRMADA")</span><h2>@booking.Movie</h2><p>@booking.Room · @booking.StartsAt.ToString("dd MMM yyyy / HH:mm")</p><p>Asientos <strong>@string.Join(", ", booking.Seats)</strong></p><p>Importe reservado <strong>Bs @booking.Total.ToString("0.00")</strong></p><a class="text-link" asp-page="/Ticket" asp-route-code="@booking.Code">Ver comprobante →</a>
+        @if (Model.CanCancel)
+        { <form method="post" asp-page-handler="Cancel" class="cancel-form"><input type="hidden" asp-for="Code" /><label class="confirm-check"><input type="checkbox" required /> Entiendo que se liberarán todos los asientos de esta reserva.</label><button class="button danger" type="submit">Cancelar reserva</button></form> }
+        else if (!booking.Cancelled) { <p class="fine-print">La función ya comenzó. La cancelación está cerrada.</p> }
+        </article>
+    }
+    <p class="fine-print">El código permite gestionar tu reserva: guárdalo y compártelo solo con tu grupo. En esta edición de demostración, las reservas duran mientras el servidor esté encendido.</p>
+</section>

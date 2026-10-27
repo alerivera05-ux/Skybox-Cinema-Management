@@ -1,0 +1,33 @@
+@page "/funcion/{id:guid}"
+@model SeatsModel
+@{ ViewData["Title"] = "Elige tus asientos"; }
+<section class="section booking-page">
+    <a class="back-link" asp-page="/Index" asp-route-date="@Model.Screening.StartsAt.ToString("yyyy-MM-dd")" asp-fragment="cartelera">← Volver a cartelera</a>
+    <div class="section-heading"><div><p class="eyebrow">TU MOMENTO ESTÁ A UN PASO</p><h1>Elige tu lugar<span class="accent">.</span></h1></div><span class="step-label">01 ASIENTOS <span>→</span> 02 CONFIRMACIÓN</span></div>
+    <div asp-validation-summary="All" class="validation" role="alert"></div>
+    @if (!Model.CanBook) { <div class="notice">Esta función ya comenzó o está agotada. Elige otro horario en la cartelera.</div> }
+    <form method="post" class="booking-layout" data-booking data-price="@Model.Screening.Price.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+        <div class="seat-panel"><div class="screen"><span>PANTALLA</span></div><p class="seat-instruction">Elige hasta 8 asientos. Desliza el mapa para ver toda la sala.</p>
+        <div class="seat-scroll" tabindex="0" role="region" aria-label="Mapa de asientos, desplazable horizontalmente">
+            <div class="seat-map">
+            @for (var row = 0; row < Model.Screening.Room.Rows; row++)
+            {
+                <div class="seat-row"><span class="row-label">@((char)('A' + row))</span>
+                @foreach (var seat in Model.Seats.Skip(row * Model.Screening.Room.Columns).Take(Model.Screening.Room.Columns))
+                {
+                    <label class="seat @(seat.Occupied ? "occupied" : "")"><input type="checkbox" name="SelectedSeats" value="@seat.Label" checked="@(!seat.Occupied && Model.SelectedSeats.Contains(seat.Label))" disabled="@(seat.Occupied || !Model.CanBook)" aria-label="Asiento @seat.Label, @(seat.Occupied ? "ocupado" : "disponible")" /><span>@int.Parse(seat.Label[1..])</span></label>
+                }
+                <span class="row-label">@((char)('A' + row))</span></div>
+            }
+            </div>
+        </div>
+        <div class="seat-legend"><span><i></i> Disponible</span><span><i class="chosen"></i> Tu selección</span><span><i class="taken"></i> Ocupado</span></div></div>
+        <aside class="booking-summary"><span class="eyebrow">TU FUNCIÓN</span><h2>@Model.Screening.Movie.Title</h2><p class="muted">@Model.Screening.Movie.Genre</p><dl><div><dt>Fecha</dt><dd>@Model.Screening.StartsAt.ToString("ddd dd MMM")</dd></div><div><dt>Hora</dt><dd>@Model.Screening.StartsAt.ToString("HH:mm")</dd></div><div><dt>Sala / formato</dt><dd>@Model.Screening.Room.Name · @Model.Screening.Format</dd></div><div><dt>Por asiento</dt><dd>Bs @Model.Screening.Price.ToString("0.00")</dd></div></dl>
+        <div class="selection-summary"><span class="muted">Tus asientos</span><p data-seat-list aria-live="polite">Selecciona en el mapa</p></div>
+        <div class="total"><span>Total <small data-seat-count>0 entradas</small></span><strong>Bs <span data-total>0.00</span></strong></div>
+        <p class="selection-error" data-seat-error role="status"></p>
+        <button type="submit" class="button full" disabled="@(!Model.CanBook)">Confirmar reserva <span aria-hidden="true">↗</span></button>
+        <noscript><p>El importe final se calcula al confirmar la selección.</p></noscript>
+        <p class="fine-print">Reserva sin pago en línea. Guarda tu código para consultar o cancelar. Los asientos se confirman al finalizar.</p></aside>
+    </form>
+</section>

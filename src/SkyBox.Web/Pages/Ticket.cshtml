@@ -1,0 +1,10 @@
+@page "/reserva/{code}"
+@model TicketModel
+@{ ViewData["Title"] = Model.Booking.Cancelled ? "Reserva cancelada" : "Tu reserva"; }
+<section class="section ticket-page">
+    <p class="eyebrow">@(Model.Booking.Cancelled ? "ASIENTOS LIBERADOS" : "NOS VEMOS EN LA SALA")</p>
+    <h1>@(Model.Booking.Cancelled ? "Reserva cancelada." : "Tu lugar está listo.")</h1>
+    <p class="muted">@(Model.Booking.Cancelled ? "Puedes elegir una nueva historia cuando quieras." : "Guarda este código. Es tu acceso para consultar o cancelar la reserva.")</p>
+    <article class="ticket"><div class="ticket-top"><span class="footer-brand">SKY BOX <span>CINEMA</span></span><span class="badge">@(Model.Booking.Cancelled ? "CANCELADA" : "RESERVA CONFIRMADA")</span></div><p class="eyebrow">@Model.Booking.Room · @Model.Booking.StartsAt.ToString("dd MMM yyyy / HH:mm")</p><h2>@Model.Booking.Movie</h2><div class="ticket-details"><div><span>ASIENTOS</span><strong>@string.Join(", ", Model.Booking.Seats)</strong></div><div><span>@(Model.Booking.Cancelled ? "IMPORTE ANULADO" : "IMPORTE RESERVADO")</span><strong>Bs @Model.Booking.Total.ToString("0.00")</strong></div></div><div class="ticket-code"><span>CÓDIGO DE RESERVA</span><strong>@Model.Booking.Code</strong><small>No es un comprobante de pago. Presenta tu reserva en boletería.</small></div></article>
+    <div class="ticket-actions"><button type="button" class="button" data-print>Guardar / imprimir</button><a class="button secondary" asp-page="/Index">Volver a cartelera</a>@if (!Model.Booking.Cancelled) { <a class="text-link" asp-page="/Reservations" asp-route-code="@Model.Booking.Code">Gestionar reserva →</a> }</div>
+</section>
