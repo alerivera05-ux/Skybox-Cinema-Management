@@ -1,3 +1,12 @@
+> **Sky Box V4 web:** la versión funcional está en `feature/skybox-v4-web`. Incluye cartelera, reservas, cancelaciones y operación con diseño oscuro y datos en memoria. Consulta la [guía de inicio y uso](docs/V4-USER-GUIDE.md) y la [validación funcional](docs/V4-FUNCTIONAL-VALIDATION.md). La documentación original de consola se conserva debajo.
+
+```powershell
+dotnet run --project src/SkyBox.Web
+```
+
+Abrir http://localhost:5080. La aplicación es una demo local; sus datos se reinician al detener el servidor.
+
+---
 #  Sky Box - Sistema de Gestión de Cine
 
 ![Portada Cine](img/portada.jpg)

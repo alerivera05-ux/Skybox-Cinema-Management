@@ -1,0 +1,22 @@
+name: Sky Box V4
+on:
+  push:
+    branches: [feature/skybox-v4-web]
+  pull_request:
+    branches: [main, feature/skybox-v4-web]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: dotnet restore SkyBox.slnx
+      - run: dotnet build SkyBox.slnx -c Release --no-restore
+      - run: dotnet run --project tests/SkyBox.Core.Tests -c Release --no-build
+      - name: Verify HTTP forms and reservations
+        shell: pwsh
+        run: ./scripts/Smoke-Web.ps1
