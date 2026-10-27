@@ -1,0 +1,28 @@
+# .NET build outputs (including the preserved console)
+**/[Bb]in/
+**/[Oo]bj/
+artifacts/
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+# Local IDE settings
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.sln.docstates
+# Local secrets and future SQLite data
+.env
+.env.*
+!.env.example
+**/appsettings.Local.json
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+# OS files
+.DS_Store
+Thumbs.db
