@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SkyBox.Core/SkyBox.Core.csproj" />
+    <Project Path="src/SkyBox.Web/SkyBox.Web.csproj" />
+  </Folder>
+  <Folder Name="/legacy/">
+    <Project Path="progam/SkyBox.csproj" />
+  </Folder>
+</Solution>
